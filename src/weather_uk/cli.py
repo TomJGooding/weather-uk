@@ -1,2 +1,6 @@
+import platformdirs
+
+
 def main():
-    print("Hello, World!")
+    appname = "weather-uk"
+    print(platformdirs.user_config_dir(appname))
