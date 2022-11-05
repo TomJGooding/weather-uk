@@ -19,7 +19,7 @@ def mock_forecast_data():
         return json.load(f)
 
 
-def test_create_url_from_endpoint():
+def test_create_url_from_forecast_endpoint():
     url = create_url_from_endpoint(
         endpoint="val/wxfcs/all/json/3840?res=3hourly",
         apikey="01234567-89ab-cdef-0123-456789abcdef",
@@ -28,6 +28,18 @@ def test_create_url_from_endpoint():
         "http://datapoint.metoffice.gov.uk/public/data/"
         "val/wxfcs/all/json/3840?res=3hourly"
         "&key=01234567-89ab-cdef-0123-456789abcdef"
+    )
+
+
+def test_create_url_from_locations_endpoint():
+    url = create_url_from_endpoint(
+        endpoint="val/wxfcs/all/json/sitelist",
+        apikey="01234567-89ab-cdef-0123-456789abcdef",
+    )
+    assert url == (
+        "http://datapoint.metoffice.gov.uk/public/data/"
+        "val/wxfcs/all/json/sitelist"
+        "?key=01234567-89ab-cdef-0123-456789abcdef"
     )
 
 
@@ -40,7 +52,7 @@ def test_create_forecast_endpoint():
 
 def test_locations_endpoint():
     endpoint = locations_endpoint()
-    assert endpoint == "val/wxfcs/all/datatype/sitelist"
+    assert endpoint == "val/wxfcs/all/json/sitelist"
 
 
 @responses.activate
