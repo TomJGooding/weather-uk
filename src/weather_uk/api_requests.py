@@ -4,7 +4,8 @@ import requests
 https://www.metoffice.gov.uk/services/data/datapoint/api-reference
 """
 
-BASE_URL: str = "http://datapoint.metoffice.gov.uk/public/data"
+MET_OFFICE_BASE_URL: str = "http://datapoint.metoffice.gov.uk/public/data"
+IP_INFO_URL: str = "http://ipinfo.io/json"
 
 
 def requests_adapter(url: str):
@@ -23,9 +24,19 @@ def requests_adapter(url: str):
         print(req_err)
 
 
+def get_ip_geo_data(adapter=requests_adapter):
+    url = IP_INFO_URL
+    return adapter(url)
+
+
+def get_met_office_data(endpoint: str, apikey: str, adapter=requests_adapter):
+    url = create_url_from_endpoint(endpoint, apikey)
+    return adapter(url)
+
+
 def create_url_from_endpoint(endpoint: str, apikey: str) -> str:
     key_prefix: str = "&" if "?" in endpoint else "?"
-    url: str = f"{BASE_URL}/{endpoint}{key_prefix}key={apikey}"
+    url: str = f"{MET_OFFICE_BASE_URL}/{endpoint}{key_prefix}key={apikey}"
     return url
 
 
@@ -37,8 +48,3 @@ def create_forecast_endpoint(location_id: str, time_step: str) -> str:
 def locations_endpoint():
     endpoint = "val/wxfcs/all/json/sitelist"
     return endpoint
-
-
-def get_data(endpoint: str, apikey: str, adapter=requests_adapter):
-    url = create_url_from_endpoint(endpoint, apikey)
-    return adapter(url)
