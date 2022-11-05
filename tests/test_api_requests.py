@@ -7,7 +7,8 @@ import responses
 from weather_uk.api_requests import (
     create_forecast_endpoint,
     create_url_from_endpoint,
-    get_data,
+    get_ip_geo_data,
+    get_met_office_data,
     locations_endpoint,
     requests_adapter,
 )
@@ -16,6 +17,12 @@ from weather_uk.api_requests import (
 @pytest.fixture()
 def mock_forecast_data():
     with open("tests/resources/mock_3hourly_forecast.json") as f:
+        return json.load(f)
+
+
+@pytest.fixture()
+def mock_ipinfo_data():
+    with open("tests/resources/mock_ipinfo.json") as f:
         return json.load(f)
 
 
@@ -56,14 +63,23 @@ def test_locations_endpoint():
 
 
 @responses.activate
-def test_get_data_using_adapter(mock_forecast_data):
+def test_get_met_office_data_using_adapter(mock_forecast_data):
     def mock_adapter(url):
         return mock_forecast_data
 
     endpoint = "val/wxfcs/all/json/3840?res=3hourly"
     apikey = "01234567-89ab-cdef-0123-456789abcdef"
-    data = get_data(endpoint, apikey, adapter=mock_adapter)
+    data = get_met_office_data(endpoint, apikey, adapter=mock_adapter)
     assert data == mock_forecast_data
+
+
+@responses.activate
+def test_get_ip_geo_data_using_adapter(mock_ipinfo_data):
+    def mock_adapter(url):
+        return mock_ipinfo_data
+
+    data = get_ip_geo_data(adapter=mock_adapter)
+    assert data == mock_ipinfo_data
 
 
 @responses.activate

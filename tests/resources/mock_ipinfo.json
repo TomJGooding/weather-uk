@@ -1,0 +1,12 @@
+{
+  "ip": "12.34.567.890",
+  "hostname": "hostname.net",
+  "city": "London",
+  "region": "England",
+  "country": "GB",
+  "loc": "51.5085,-0.1257",
+  "org": "Organisation Name",
+  "postal": "EC1A",
+  "timezone": "Europe/London",
+  "readme": "https://ipinfo.io/missingauth"
+}
