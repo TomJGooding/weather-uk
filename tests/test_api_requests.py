@@ -14,7 +14,7 @@ from weather_uk.api_requests import (
 
 @pytest.fixture()
 def mock_forecast_data():
-    with open("tests/resources/mock_forecast.json") as f:
+    with open("tests/resources/mock_3hourly_forecast.json") as f:
         return json.load(f)
 
 
