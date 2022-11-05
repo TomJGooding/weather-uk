@@ -34,6 +34,11 @@ def create_forecast_endpoint(location_id: str, time_step: str) -> str:
     return endpoint
 
 
+def locations_endpoint():
+    endpoint = "val/wxfcs/all/datatype/sitelist"
+    return endpoint
+
+
 def get_data(endpoint: str, apikey: str, adapter=requests_adapter):
     url = create_url_from_endpoint(endpoint, apikey)
     return adapter(url)
