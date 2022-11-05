@@ -8,6 +8,7 @@ from weather_uk.api_requests import (
     create_forecast_endpoint,
     create_url_from_endpoint,
     get_data,
+    locations_endpoint,
     requests_adapter,
 )
 
@@ -35,6 +36,11 @@ def test_create_forecast_endpoint():
     time_step = "3hourly"
     endpoint = create_forecast_endpoint(location_id, time_step)
     assert endpoint == "val/wxfcs/all/json/3840?res=3hourly"
+
+
+def test_locations_endpoint():
+    endpoint = locations_endpoint()
+    assert endpoint == "val/wxfcs/all/datatype/sitelist"
 
 
 @responses.activate
