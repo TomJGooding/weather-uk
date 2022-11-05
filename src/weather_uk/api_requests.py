@@ -35,7 +35,7 @@ def create_forecast_endpoint(location_id: str, time_step: str) -> str:
 
 
 def locations_endpoint():
-    endpoint = "val/wxfcs/all/datatype/sitelist"
+    endpoint = "val/wxfcs/all/json/sitelist"
     return endpoint
 
 
