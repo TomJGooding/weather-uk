@@ -57,3 +57,28 @@ def haversine(lat1: float, long1: float, lat2: float, long2: float) -> float:
     c = 2 * asin(sqrt(d))
 
     return AVG_EARTH_RADIUS_KM * c
+
+
+def find_nearest_met_office_location(
+    lat: float,
+    long: float,
+    locations_data: dict,
+):
+    locations_list: list[dict] = locations_data["Locations"]["Location"]
+
+    nearest_distance: float = 9999  # initialised as impossibly large distance
+    nearest_location_data: dict = {}
+    for location in locations_list:
+        location_lat = float(location["latitude"])
+        location_long = float(location["longitude"])
+        distance = haversine(
+            lat,
+            long,
+            location_lat,
+            location_long,
+        )
+        if distance < nearest_distance:
+            nearest_distance = distance
+            nearest_location_data = location
+
+    return MetOfficeLocation.from_dict(nearest_location_data)
