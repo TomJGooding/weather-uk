@@ -25,6 +25,25 @@ class UserGeolocation:
         )
 
 
+@dataclass
+class MetOfficeLocation:
+    id: str
+    name: str
+    region: str
+    latitude: float
+    longitude: float
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            id=data["id"],
+            name=data["name"],
+            region=data["region"],
+            latitude=float(data["latitude"]),
+            longitude=float(data["longitude"]),
+        )
+
+
 def haversine(lat1: float, long1: float, lat2: float, long2: float) -> float:
     """The haversine formula calculates the great-circle distance
     between two points on the Earth surface

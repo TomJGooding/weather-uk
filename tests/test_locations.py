@@ -2,12 +2,18 @@ import json
 
 import pytest
 
-from weather_uk.locations import UserGeolocation, haversine
+from weather_uk.locations import MetOfficeLocation, UserGeolocation, haversine
 
 
 @pytest.fixture()
 def mock_ipinfo_data():
     with open("tests/resources/mock_ipinfo.json") as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def mock_met_office_locations_data():
+    with open("tests/resources/mock_sitelist.json") as f:
         return json.load(f)
 
 
@@ -30,3 +36,15 @@ def test_haversine():
 
     distance = haversine(lat1, long1, lat2, long2)
     assert distance == 392.2172595594006
+
+
+def test_met_office_location_class(mock_met_office_locations_data):
+    all_locations = mock_met_office_locations_data["Locations"]
+    location_data = all_locations["Location"][0]
+    location = MetOfficeLocation.from_dict(location_data)
+
+    assert location.id == "14"
+    assert location.name == "Carlisle Airport"
+    assert location.region == "nw"
+    assert location.latitude == 54.9375
+    assert location.longitude == -2.8092
