@@ -2,7 +2,12 @@ import json
 
 import pytest
 
-from weather_uk.locations import MetOfficeLocation, UserGeolocation, haversine
+from weather_uk.locations import (
+    MetOfficeLocation,
+    UserGeolocation,
+    find_nearest_met_office_location,
+    haversine,
+)
 
 
 @pytest.fixture()
@@ -39,12 +44,28 @@ def test_haversine():
 
 
 def test_met_office_location_class(mock_met_office_locations_data):
-    all_locations = mock_met_office_locations_data["Locations"]
-    location_data = all_locations["Location"][0]
-    location = MetOfficeLocation.from_dict(location_data)
+    locations_list = mock_met_office_locations_data["Locations"]["Location"]
+    test_location = locations_list[0]
+    location = MetOfficeLocation.from_dict(test_location)
 
     assert location.id == "14"
     assert location.name == "Carlisle Airport"
     assert location.region == "nw"
     assert location.latitude == 54.9375
     assert location.longitude == -2.8092
+
+
+def test_find_nearest_met_office_location(mock_met_office_locations_data):
+    # London co-ordinates
+    lat = 51.5085
+    long = -0.1257
+
+    nearest_met_office_location = find_nearest_met_office_location(
+        lat, long, mock_met_office_locations_data
+    )
+
+    assert nearest_met_office_location.id == "352409"
+    assert nearest_met_office_location.name == "London"
+    assert nearest_met_office_location.region == "se"
+    assert nearest_met_office_location.latitude == 51.5081
+    assert nearest_met_office_location.longitude == -0.1248
