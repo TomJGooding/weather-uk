@@ -7,6 +7,7 @@ from weather_uk.locations import (
     UserGeolocation,
     find_nearest_met_office_location,
     haversine,
+    is_user_geolocation_in_uk,
 )
 
 
@@ -69,3 +70,13 @@ def test_find_nearest_met_office_location(mock_met_office_locations_data):
     assert nearest_met_office_location.region == "se"
     assert nearest_met_office_location.latitude == 51.5081
     assert nearest_met_office_location.longitude == -0.1248
+
+
+def test_is_user_geolocation_in_uk_true():
+    user_country = "GB"
+    assert is_user_geolocation_in_uk(user_country) is True
+
+
+def test_is_user_geolocation_in_uk_false():
+    user_country = "US"
+    assert is_user_geolocation_in_uk(user_country) is False
