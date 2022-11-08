@@ -44,6 +44,10 @@ class MetOfficeLocation:
         )
 
 
+def is_user_geolocation_in_uk(country: str) -> bool:
+    return country in ("GB")
+
+
 def haversine(lat1: float, long1: float, lat2: float, long2: float) -> float:
     """The haversine formula calculates the great-circle distance
     between two points on the Earth surface
