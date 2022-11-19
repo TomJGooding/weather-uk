@@ -17,6 +17,7 @@ def test_forecast_weather_data(mock_forecast_data):
     weather_data = weather_period[0]["Rep"][0]
     weather = ForecastWeatherData.from_dict(weather_data)
 
+    assert weather.mins_after_midnight == 360
     assert str(weather.weather_type) == "Heavy rain"
     assert weather.temp_c == 9
     assert weather.temp_feels_like_c == 7
