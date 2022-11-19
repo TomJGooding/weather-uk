@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from weather_uk.forecasts import ForecastSingleDate, ForecastWeatherData
+from weather_uk.forecasts import ForecastSingleDate, ForecastWeatherData, forecast_table
 
 
 @pytest.fixture()
@@ -39,3 +39,21 @@ def test_forecast_single_date(mock_forecast_data):
 
     assert str(forecast_single_date.date) == "2022-11-05"
     assert len(forecast_single_date.forecast) == 6
+
+
+def test_forecast_table(mock_forecast_data):
+    forecast_location = mock_forecast_data["SiteRep"]["DV"]["Location"]
+    forecast_periods = forecast_location["Period"]
+    forecast_day = forecast_periods[0]
+
+    forecast = ForecastSingleDate.from_dict(forecast_day)
+    table = forecast_table(forecast)
+
+    assert table.count("+") == 21
+    assert table.count("%") == 6
+    assert "06:00" in table
+    assert "09:00" in table
+    assert "Heavy rain" in table
+    assert "9(7) °C" in table
+    assert "9 mph" in table
+    assert "97%" in table
