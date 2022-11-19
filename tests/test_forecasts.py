@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from weather_uk.forecasts import ForecastWeatherData
+from weather_uk.forecasts import ForecastSingleDate, ForecastWeatherData
 
 
 @pytest.fixture()
@@ -13,8 +13,8 @@ def mock_forecast_data():
 
 def test_forecast_weather_data(mock_forecast_data):
     weather_location = mock_forecast_data["SiteRep"]["DV"]["Location"]
-    weather_period = weather_location["Period"]
-    weather_data = weather_period[0]["Rep"][0]
+    weather_periods = weather_location["Period"]
+    weather_data = weather_periods[0]["Rep"][0]
     weather = ForecastWeatherData.from_dict(weather_data)
 
     assert weather.mins_after_midnight == 360
@@ -28,3 +28,14 @@ def test_forecast_weather_data(mock_forecast_data):
     assert weather.uv_idx == 0
     assert weather.humidity_pct == 100
     assert weather.visibility == "MO"
+
+
+def test_forecast_single_date(mock_forecast_data):
+    forecast_location = mock_forecast_data["SiteRep"]["DV"]["Location"]
+    forecast_periods = forecast_location["Period"]
+    forecast_day = forecast_periods[0]
+
+    forecast_single_date = ForecastSingleDate.from_dict(forecast_day)
+
+    assert str(forecast_single_date.date) == "2022-11-05"
+    assert len(forecast_single_date.forecast) == 6

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import date
 
 from weather_uk.weather_type import WeatherType
 
@@ -33,4 +34,21 @@ class ForecastWeatherData:
             uv_idx=int(data["U"]),
             humidity_pct=float(data["H"]),
             visibility=data["V"],
+        )
+
+
+@dataclass
+class ForecastSingleDate:
+    date: date
+    forecast: list[ForecastWeatherData]
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        date_string = data["value"][:-1]
+        return cls(
+            date=date.fromisoformat(date_string),
+            forecast=[
+                ForecastWeatherData.from_dict(weather_data)
+                for weather_data in data["Rep"]
+            ],
         )
