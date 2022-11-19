@@ -5,6 +5,7 @@ from weather_uk.weather_type import WeatherType
 
 @dataclass
 class ForecastWeatherData:
+    mins_after_midnight: int
     weather_type: WeatherType
     temp_c: float
     temp_feels_like_c: float
@@ -21,6 +22,7 @@ class ForecastWeatherData:
         weather_type_code = int(data["W"])
         weather_type = WeatherType(weather_type_code)
         return cls(
+            mins_after_midnight=int(data["$"]),
             weather_type=weather_type,
             temp_c=float(data["T"]),
             temp_feels_like_c=float(data["F"]),
