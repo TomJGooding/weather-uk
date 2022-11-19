@@ -41,11 +41,11 @@ class WeatherType(Enum):
     def __str__(self) -> str:
         description: str = self.name.replace("_", " ").capitalize()
         substrs_to_replace: dict = {
-            " day": " (day)",
-            " night": "_night",
+            " day": "",
+            " night": "",
         }
         for key, value in substrs_to_replace.items():
-            if description != "Sunny day":
+            if description not in ("Sunny day", "Clear night"):
                 description = description.replace(key, value)
 
         return description
