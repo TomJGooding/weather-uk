@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import date
 
+from prettytable import PrettyTable
+
 from weather_uk.weather_type import WeatherType
 
 
@@ -52,3 +54,21 @@ class ForecastSingleDate:
                 for weather_data in data["Rep"]
             ],
         )
+
+
+def forecast_table(forecast: ForecastSingleDate) -> str:
+    table = PrettyTable()
+    for weather in forecast.forecast:
+        hours, minutes = divmod(weather.mins_after_midnight, 60)
+        time = f"{hours:02d}:{minutes:02d}"
+        weather_type = weather.weather_type
+        temp = f"{int(weather.temp_c)}({int(weather.temp_feels_like_c)}) °C"
+        precip_prob = f"{int(weather.precip_prob_pct)}%"
+        wind = f"{int(weather.wind_speed_mph)} mph"
+
+        table.add_column(
+            fieldname=time,
+            column=[weather_type, temp, precip_prob, wind],
+        )
+
+    return table.get_string()
