@@ -1,5 +1,10 @@
 # weather-uk
 
+> [!IMPORTANT]
+> `weather-uk` no longer works and the repository has been archived.
+>
+> The Met Office retired the DataPoint service on 1 December 2025.
+
 Check UK weather forecasts from your terminal.
 
 ![screenshot](assets/screenshot.svg)
